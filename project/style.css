@@ -1,0 +1,33 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+}
+.user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+}
+.user p {
+    font-size: 18px;
+    color: #333;
+    font-family: sans-serif;
+    margin-bottom: 10px;
+}
+
+.user a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.user a:hover {
+    background-color: #45a049;
+}
