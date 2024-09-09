@@ -37,11 +37,15 @@
     cursor: pointer;
     transition: background-color 0.3s;
 }
-
 .show-title:hover {
     background-color: #45a049;
 }
-
+.disable {
+    background-color: rgba(76, 175, 80, 0.68);
+}
+.disable:hover {
+    background-color: rgba(76, 175, 80, 0.68);
+}
 .titles h3, .titles a {
     font-family: sans-serif;
 }

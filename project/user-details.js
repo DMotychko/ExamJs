@@ -3,12 +3,16 @@ function getUrl () {
     return url.get('id');
 }
 
+const idUrl = getUrl()
+
 const userDetailsDiv = document.getElementById('user-details');
 const titlesDiv = document.getElementById('titles')
 
-fetch(`https://jsonplaceholder.typicode.com/users/${getUrl()}`)
-    .then(response => response.json())
-    .then(user => {
+async function loadUser () {
+    try {
+        const responseUser = await fetch(`https://jsonplaceholder.typicode.com/users/${idUrl}`)
+        const user = await responseUser.json()
+
         userDetailsDiv.innerHTML = `
             <p>ID: ${user.id}</p>
             <p>Name: ${user.name}</p>
@@ -29,27 +33,46 @@ fetch(`https://jsonplaceholder.typicode.com/users/${getUrl()}`)
                 <li>BS: ${user.company.bs}</li>
             </ul>
         `;
-    })
+    }
+    catch (error) {
+        console.log(error)
+    }
 
-function fetchTitlesPosts() {
-    fetch(`https://jsonplaceholder.typicode.com/users/${getUrl()}/posts`)
-        .then(response => response.json())
-        .then(posts => {
-            for (const post of posts) {
-                let div = document.createElement('div');
-                let h3 = document.createElement('h3');
-                let a = document.createElement("a");
-
-                h3.innerText = `${post.title}`
-                a.href = `post-details.html?postId=${post.id}`
-                a.innerText = 'Детальна інформація'
-
-                div.appendChild(h3)
-                div.appendChild(a)
-                titlesDiv.appendChild(div)
-            }
-        })
 }
 
 let buttonTitlesPosts = document.getElementById('show-title')
-buttonTitlesPosts.onclick = () => fetchTitlesPosts()
+
+async function loadPostTitles() {
+    try {
+        const responsePosts = await fetch(`https://jsonplaceholder.typicode.com/users/${idUrl}/posts`)
+        const posts = await responsePosts.json()
+
+        for (const post of posts) {
+            let div = document.createElement('div');
+            let h3 = document.createElement('h3');
+            let a = document.createElement("a");
+
+            h3.innerText = `${post.title}`
+            a.href = `post-details.html?postId=${post.id}`
+            a.innerText = 'Детальна інформація'
+
+            div.appendChild(h3)
+            div.appendChild(a)
+            titlesDiv.appendChild(div)
+        }
+
+        buttonTitlesPosts.disabled = true
+        if(buttonTitlesPosts.disabled === true) {
+            buttonTitlesPosts.className = 'disable show-title'
+        }
+
+    }
+    catch (error) {
+        console.log(error)
+    }
+
+}
+
+loadUser()
+
+buttonTitlesPosts.onclick = () => loadPostTitles()

@@ -3,22 +3,26 @@ function getUrl () {
       return url.get('postId')
 }
 
-let divPostDetails = document.getElementById('post-details')
-let divComments = document.getElementById('comments')
+const divPostDetails = document.getElementById('post-details')
+const divComments = document.getElementById('comments')
+let idUrl = getUrl()
 
-fetch(`https://jsonplaceholder.typicode.com/posts/${getUrl()}`)
-    .then(response => response.json())
-    .then(post => {
+
+async function loadPostAndComments () {
+    try {
+        const postResponse = await fetch(`https://jsonplaceholder.typicode.com/posts/${idUrl}`)
+        const post = await postResponse.json()
+
         divPostDetails.innerHTML = `
             <p>User ID: ${post.userId}</p>
             <p>Post ID: ${post.id}</p>
             <p>Title: ${post.title}</p>
             <p>Body: ${post.body}</p>
         `
-    })
-fetch(`https://jsonplaceholder.typicode.com/posts/${getUrl()}/comments`)
-    .then(response => response.json())
-    .then(comments => {
+
+        const responseComments = await fetch(`https://jsonplaceholder.typicode.com/posts/${idUrl}/comments`)
+        const comments = await responseComments.json()
+
 
         for (const comment of comments) {
 
@@ -26,14 +30,19 @@ fetch(`https://jsonplaceholder.typicode.com/posts/${getUrl()}/comments`)
 
             newDiv.className = 'comment'
             newDiv.innerHTML = `
-                <p>Post ID: ${comment.postId}</p>
-                <p>ID: ${comment.id}</p>
-                <p>Name: ${comment.name}</p>
-                <p>Email: ${comment.email}</p>
-                <p>Body: ${comment.body}</p>
+            <p>Post ID: ${comment.postId}</p>
+            <p>ID: ${comment.id}</p>
+            <p>Name: ${comment.name}</p>
+            <p>Email: ${comment.email}</p>
+            <p>Body: ${comment.body}</p>
             `
 
             divComments.appendChild(newDiv)
         }
+    } catch (error) {
+        console.log (error)
+    }
 
-    })
+}
+
+loadPostAndComments();

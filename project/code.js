@@ -1,8 +1,9 @@
 const divContainer = document.getElementById("container")
 
-fetch('https://jsonplaceholder.typicode.com/users')
-    .then(response => response.json())
-    .then(users => {
+async function loadUsers () {
+    try {
+        const responseUsers = await fetch('https://jsonplaceholder.typicode.com/users')
+        const users = await responseUsers.json()
 
         for (const user of users) {
 
@@ -19,5 +20,11 @@ fetch('https://jsonplaceholder.typicode.com/users')
             div.appendChild(linkElement);
             divContainer.appendChild(div);
         }
+    }
+    catch (error) {
+        console.log(error)
+    }
 
-    })
+}
+
+loadUsers();
